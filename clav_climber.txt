@@ -1,0 +1,13 @@
+clav climber ableton project is kinda reverse engineered based on what data I've seen so far. 
+
+Obviously there's more that can be done but even mapping root note to heart rate, 
+and sending midi chords based on modulo 
+(i.e odd numbers minor 9s, even major 9 as is in the project)
+would make something that is sonically interesting through that clav patch.
+
+On the other side, theres a filter randomly stepping alongside the output sound - instead of using the random LFO on the filter, use less predictable numbers to controll that directly
+
+You can control the little offset on echo and delay with midi you know...
+
+
+Note echo is literally midi delay tho

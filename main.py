@@ -1,4 +1,5 @@
 from fitparse import FitFile
+import math
 
 
 outputFile = open("out.txt", "a")
@@ -14,7 +15,8 @@ for record in fitfile.get_messages('record'):
             continue
 
 
-
+        if record_data.name == "accumulated_power":
+            print('accumulated power/1000: {}, Sine = {}'.format(record_data.value/1000,math.sin(record_data.value/1000)))
 
 
         # Print the records name and value (and units if it has any)
