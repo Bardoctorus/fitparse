@@ -20,9 +20,11 @@ else:
 with midiout:
     note_on = [0x90, 60, 112]
     note_off = [0x80, 60, 0]
+    control_up =[0xB0, 0x07, 122]
+    control_down =[0xB0, 0x07, 0]
     while True:
-        midiout.send_message(note_on)
+        midiout.send_message(control_up)
         time.sleep(0.5)
-        midiout.send_message(note_off)
+        midiout.send_message(control_down)
         time.sleep(0.3)
 
