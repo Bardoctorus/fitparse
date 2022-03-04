@@ -1,3 +1,3 @@
 import utils.utils
 
-print(utils.utils.map2midi(2,3,50))
+print(utils.utils.map2midi(0,0,50))
