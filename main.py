@@ -1,9 +1,10 @@
 from fitparse import FitFile
 import math
+import time
+import rtmidi
 
 
-outputFile = open("out.txt", "a")
-
+outputFile = open("out", "a")
 fitfile = FitFile('441657585374887937.fit')
 counter =0
 # Get all data messages that are of type record
@@ -11,9 +12,9 @@ for record in fitfile.get_messages('record'):
 
     # Go through all the data entries in this record
     for record_data in record:
+        # activity type isn't relevant i.e run/ride
         if record_data.name == "activity_type":
             continue
-
 
         if record_data.name == "accumulated_power":
             print('accumulated power/1000: {}, Sine = {}'.format(record_data.value/1000,math.sin(record_data.value/1000)))
