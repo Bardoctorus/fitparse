@@ -61,12 +61,11 @@ g = 0
 maxg = len(enhanced_speed_list)
 with midiout:
     while True:
-        #every second do thing
         if (counter == 50):
             
             speedmidi = utils.map2midi(enhanced_speed_list[g],min(enhanced_speed_list),max(enhanced_speed_list))
-            powermidi = utils.map2midi(power_list[g],min(power_list),max(power_list))
-            print("100 reached") 
+            powermidi = utils.map2midi(power_list[g],max(power_list),min(power_list))
+            print('note = {}. vel = {} '.format(str(speedmidi),str(powermidi))) 
             note_on =[0x90,speedmidi,powermidi]
             midiout.send_message(note_on)
     

@@ -11,7 +11,7 @@ for i in available_ports:
 
 if available_ports:
         print("Opening available midi port")
-        midiout.open_port(0)
+        midiout.open_port(1)
 else:
     print("No port available, opening virtual port")
     midiout.open_virtual_port("My Virtual Output")
@@ -20,13 +20,13 @@ else:
 with midiout:
     note_on = [0x90, 60, 112]
     note_off = [0x80, 60, 0]
-    control_up =[0xB0, 0x07, 122]
-    control_down =[0xB0, 0x07, 0]
+    control_up =[0xB0, 0x10, 122]
+    control_down =[0xB0, 0x10,100]
     while True:
         midiout.send_message(control_up)
-        midiout.send_message(note_on)
+#        midiout.send_message(note_on)
         time.sleep(0.5)
         midiout.send_message(control_down)
-        midiout.send_message(note_off)
+ #       midiout.send_message(note_off)
         time.sleep(0.3)
 
