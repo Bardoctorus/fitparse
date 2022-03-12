@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import time
 import rtmidi
 from utils import utils
