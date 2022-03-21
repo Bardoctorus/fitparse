@@ -26,7 +26,7 @@ class MIDIClockReceiver:
         self.running = True
         self._samples = deque()
         self._last_clock = None
-        self.count = 0
+        self.clockcount = 0
 
     def __call__(self, event, data=None):
         msg, _ = event
@@ -46,7 +46,9 @@ class MIDIClockReceiver:
             if len(self._samples) >= 2:
                 self.bpm = 2.5 / (sum(self._samples) / len(self._samples))
                 self.sync = True
-
+            self.clockcount += 1    
+            if self.clockcount > 96:
+                self.clockcount = 0
 
         elif msg[0] in (SONG_CONTINUE, SONG_START):
             self.running = True
@@ -54,15 +56,13 @@ class MIDIClockReceiver:
         elif msg[0] == SONG_STOP:
             self.running = False
             print("STOP received.")
-        self.count += 1    
-        if self.count > 906:
-            self.count = 0
+
 
 def main(args=None):
 
     clock = MIDIClockReceiver()
-    note_on = [0x90, 60, 112]
-    note_off = [0x80, 60, 0]
+    note_on = [0x90, 40, 112]
+    note_off = [0x80, 40, 0]
     try:
         m_in, port_name = open_midiinput(0)
         m_out = rtmidi.MidiOut()
@@ -81,12 +81,14 @@ def main(args=None):
 
             if clock.running:
                 if clock.sync:
-                    print(clock.count)
-                    if (clock.count == 0):
+                    print(clock.clockcount)
+                    if (clock.clockcount == 0):
                         m_out.send_message(note_on)
-                    else:
-                        m_out.send_message(note_off)
+                    elif clock.clockcount > 20 and clock.clockcount < 22:
 
+                        m_out.send_message(note_off)
+                    else:
+                        continue
 #                    print("%.2f bpm" % clock.bpm)
 #                else:
 #                    print("%.2f bpm (no sync)" % clock.bpm)
