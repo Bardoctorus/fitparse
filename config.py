@@ -1,21 +1,35 @@
-<<<<<<< HEAD
 import time
 import rtmidi
+from rtmidi.midiconstants import CONTROL_CHANGE, GENERAL_PURPOSE_CONTROLLER_1
 from utils import utils
+import sys
+
+
 
 midiout = rtmidi.MidiOut()
 
-# TODO make a better way of choosing midi port - with arg + backup
-midiout.open_port(0)
+if (len(sys.argv) < 2):
 
+    available_ports = midiout.get_ports()
+    print("available MIDI ports:")
+    for i in available_ports: 
+        print(i)
+    
+    port = int(input("choose midi port\n"))
 
-while True:
-    with midiout:
-        counter = 0
+else:
+    port = int(sys.argv[1])
+midiout.open_port(port)
 
+x = range (1,100,10)
+
+with midiout:
+    while True:
+        knob = input("which control knob do you want to set?")
+        
         print("twiddling knob 1 for 10 seconds")
-        for i in range(10):
-            control = [0xB0, 0x10, i]
+        for i in x:
+            control = [CONTROL_CHANGE, GENERAL_PURPOSE_CONTROLLER_1, i]
             midiout.send_message(control)
             print(control)
             time.sleep(1) 
