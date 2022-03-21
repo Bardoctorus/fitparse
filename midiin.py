@@ -87,8 +87,7 @@ def main(args=None):
                     elif clock.clockcount > 20 and clock.clockcount < 22:
 
                         m_out.send_message(note_off)
-                    else:
-                        continue
+                    
 #                    print("%.2f bpm" % clock.bpm)
 #                else:
 #                    print("%.2f bpm (no sync)" % clock.bpm)
@@ -97,7 +96,9 @@ def main(args=None):
         pass
     finally:
         m_in.close_port()
+        m_out.close_port()
         del m_in
+        del m_out
 
 
 if __name__ == '__main__':
