@@ -12,6 +12,7 @@ MIDI clock (status 0xF8) is sent 24 times per quarter note by clock generators.
 # TODO: strip the core of this out and use it as a basic trigger in
 
 import time
+import random
 from collections import deque
 
 from rtmidi.midiconstants import (TIMING_CLOCK, SONG_CONTINUE, SONG_START, SONG_STOP)
@@ -63,6 +64,7 @@ def main(args=None):
     clock = MIDIClockReceiver()
     note_on = [0x90, 40, 112]
     note_off = [0x80, 40, 0]
+    note_playing = False
     try:
         m_in, port_name = open_midiinput(0)
         m_out = rtmidi.MidiOut()
@@ -81,12 +83,15 @@ def main(args=None):
 
             if clock.running:
                 if clock.sync:
-                    print(clock.clockcount)
-                    if (clock.clockcount == 0):
-                        m_out.send_message(note_on)
-                    elif clock.clockcount > 20 and clock.clockcount < 22:
+#                    print(clock.clockcount)
+                    if (clock.clockcount == 0 and note_playing == False):
+                        note_playing = True
+                        m_out.send_message([0x90, 40, random.randrange(100,127)])
 
-                        m_out.send_message(note_off)
+                    elif clock.clockcount > 24:
+
+                        m_out.send_message([0x80, 40, 0])
+                        note_playing = False
                     
 #                    print("%.2f bpm" % clock.bpm)
 #                else:
